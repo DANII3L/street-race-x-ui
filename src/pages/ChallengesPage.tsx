@@ -32,14 +32,14 @@ export const ChallengesPage = () => {
         loadChallengesHistory();
     }, []);
 
-    const handleRespondChallenge = async (id: string, action: 'accept' | 'reject') => {
-        setActionLoadingId(id);
+    const handleRespondChallenge = async (challengeId: string, aceptar: 'aceptado' | 'rechazado') => {
+        setActionLoadingId(challengeId);
         setError('');
         setSuccess('');
         try {
-            const response = await ChallengeService.respondToChallenge(id, action);
+            const response = await ChallengeService.respondToChallenge(challengeId, aceptar);
             if (response.ok) {
-                setSuccess(`Reto actualizado: ${action === 'accept' ? 'Aceptado' : 'Rechazado'} con éxito.`);
+                setSuccess(`Reto actualizado: ${aceptar === 'aceptado' ? 'Aceptado' : 'Rechazado'} con éxito.`);
                 await loadChallengesHistory();
             }
         } catch (err: any) {

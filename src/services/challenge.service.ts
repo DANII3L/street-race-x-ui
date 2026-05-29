@@ -3,7 +3,7 @@ import { type ApiResponse, type ChallengeItem, type ChallengeActionResponse } fr
 
 class ChallengeServiceImpl {
   private handleError(error: any): never {
-    const message = error.response?.data?.message || 'Error inesperado en el servicio de retos';
+    const message = error.response?.data?.msg || 'Error inesperado en el servicio de retos';
     throw new Error(message);
   }
 
@@ -30,9 +30,9 @@ class ChallengeServiceImpl {
     }
   }
 
-  public async respondToChallenge(challengeId: string, action: 'accept' | 'reject'): Promise<ChallengeActionResponse> {
+  public async respondToChallenge(challengeId: string, aceptar: 'aceptado' | 'rechazado'): Promise<ChallengeActionResponse> {
     try {
-      const response = await apiClient.patch<ChallengeActionResponse>(`/challenges/${challengeId}/respond`, { action });
+      const response = await apiClient.patch<ChallengeActionResponse>(`/challenges/${challengeId}/respond`, { aceptar });
       return response.data;
     } catch (error) {
       this.handleError(error);
@@ -41,7 +41,8 @@ class ChallengeServiceImpl {
 
   public async completeChallenge(challengeId: string, ganadorId: string): Promise<ChallengeActionResponse> {
     try {
-      const response = await apiClient.post<ChallengeActionResponse>(`/challenges/${challengeId}/complete`, { ganador_id: ganadorId });
+      console.log(ganadorId)
+      const response = await apiClient.post<ChallengeActionResponse>(`/challenges/${challengeId}/complete`, { ganadorId: ganadorId });
       return response.data;
     } catch (error) {
       this.handleError(error);

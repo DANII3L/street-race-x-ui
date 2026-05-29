@@ -3,7 +3,7 @@ import { type DiscoverResponse, type UserProfileResponse } from '../types';
 
 class PilotServiceImpl {
   private handleError(error: any): never {
-    const message = error.response?.data?.message || 'Error inesperado en el servicio de pilotos';
+    const message = error.response?.data?.msg || 'Error inesperado en el servicio de pilotos';
     throw new Error(message);
   }
 

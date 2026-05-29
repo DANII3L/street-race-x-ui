@@ -4,7 +4,7 @@ import { type ChallengeItem } from '../../types';
 interface ChallengeCardProps {
   challenge: ChallengeItem;
   currentUserId: string;
-  onRespond: (id: string, action: 'accept' | 'reject') => void;
+  onRespond: (challengeId : string, aceptar: 'aceptado' | 'rechazado') => void;
   onComplete: (id: string, winnerId: string) => void;
   actionLoadingId: string | null;
 }
@@ -59,7 +59,7 @@ export const ChallengeCard: React.FC<ChallengeCardProps> = ({
           <button
             type="button"
             disabled={actionLoadingId !== null}
-            onClick={() => onRespond(id, 'reject')}
+            onClick={() => onRespond(id, 'rechazado')}
             className="w-1/2 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 py-1.5 text-xs font-bold uppercase tracking-wider transition cursor-pointer"
           >
             Rechazar
@@ -67,7 +67,7 @@ export const ChallengeCard: React.FC<ChallengeCardProps> = ({
           <button
             type="button"
             disabled={actionLoadingId !== null}
-            onClick={() => onRespond(id, 'accept')}
+            onClick={() => onRespond(id, 'aceptado')}
             className="w-1/2 rounded bg-race-accent hover:bg-red-700 text-white py-1.5 text-xs font-bold uppercase tracking-wider transition cursor-pointer"
           >
             {isLoader ? '...' : 'Aceptar Reto'}

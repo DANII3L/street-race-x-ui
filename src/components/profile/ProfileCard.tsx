@@ -1,6 +1,8 @@
 import React from 'react';
 import { type PilotProps } from '../../types';
 
+import { FireIcon } from '@heroicons/react/24/solid';
+
 interface ProfileCardProps {
     profile: PilotProps;
 }
@@ -54,9 +56,12 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
                     <p className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Derrotas</p>
                     <p className="text-xl font-black text-red-500 mt-1">{derrotas}</p>
                 </div>
-                <div className="bg-zinc-900/40 p-3 rounded-lg border border-zinc-800/60">
+                <div className="bg-zinc-900/40 p-3 rounded-lg border border-zinc-800/60 flex flex-col justify-between items-center">
                     <p className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider">Racha Activa</p>
-                    <p className="text-xl font-black text-amber-500 mt-1">{retos_consecutivos} 🔥</p>
+                    <div className="flex items-center space-x-1 mt-1">
+                        <p className="text-xl font-black text-amber-500">{retos_consecutivos}</p>
+                        <FireIcon className="w-5 h-5 text-amber-500 animate-pulse" />
+                    </div>
                 </div>
             </div>
 

@@ -5,8 +5,8 @@ import { type ChallengeItem } from '../../types';
 interface ChallengeListProps {
     challenges: ChallengeItem[];
     currentUserId: string;
-    onRespond: (id: string, action: 'accept' | 'reject') => void;
-    onComplete: (id: string, winnerId: string) => void;
+    onRespond: (challengeId: string, aceptar: 'aceptado' | 'rechazado') => void;
+    onComplete: (challengeId: string, ganadorId: string) => void;
     actionLoadingId: string | null;
 }
 

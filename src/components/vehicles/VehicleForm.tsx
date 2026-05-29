@@ -10,9 +10,11 @@ interface VehicleFormProps {
 export const VehicleForm: React.FC<VehicleFormProps> = ({ onVehicleCreated, onCancel, currentCount }) => {
     const [marca, setMarca] = useState('');
     const [modelo, setModelo] = useState('');
-    const [año, setAño] = useState<number>(new Date().getFullYear());
+    const [anio, setAnio] = useState<number>(new Date().getFullYear());
+    const [color, setColor] = useState('');
     const [placa, setPlaca] = useState('');
-    const [tipoVehiculo, setTipoVehiculo] = useState('9db4ca5b-68c7-4b78-aed3-1c795c02dac0');
+    const [modificaciones, setModificaciones] = useState('');
+    const [tipoVehiculo, setTipoVehiculo] = useState('moto');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -23,19 +25,18 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ onVehicleCreated, onCa
 
         try {
             const payload = {
+                tipo_vehiculo: tipoVehiculo,
                 marca,
                 modelo,
-                año: Number(año),
-                placa,
-                tipo_vehiculo: tipoVehiculo,
+                año: Number(anio),
+                color: color || 'No especificado',
+                placa: placa || null,
+                modificaciones: modificaciones || null,
                 activo: currentCount === 0
             };
 
             const response = await VehicleService.createVehicle(payload);
             if (response.ok) {
-                setMarca('');
-                setModelo('');
-                setPlaca('');
                 onVehicleCreated();
             } else {
                 setError('No se pudo registrar el vehículo.');
@@ -48,8 +49,8 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ onVehicleCreated, onCa
     };
 
     return (
-        <form onSubmit={handleSubmit} className="rounded-xl bg-race-card border border-zinc-800 p-6 space-y-4 max-w-xl animate-fadeIn">
-            <h3 className="text-sm font-bold uppercase tracking-wider text-race-accent">Registrar Nuevo Vehículo</h3>
+        <form onSubmit={handleSubmit} className="rounded-xl bg-race-card border border-zinc-800 p-6 space-y-4 max-w-xl animate-fadeIn text-left">
+            <h3 className="text-sm font-black uppercase tracking-wider text-race-accent">Registrar Ficha del Vehículo</h3>
 
             {error && (
                 <div className="rounded bg-red-500/10 p-2.5 text-xs text-red-500 border border-red-500/20">
@@ -59,24 +60,25 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ onVehicleCreated, onCa
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div>
+                    <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">Tipo de Vehículo</label>
+                    <select
+                        value={tipoVehiculo}
+                        onChange={(e) => setTipoVehiculo(e.target.value)}
+                        className="mt-1 w-full rounded border border-zinc-700 bg-zinc-900 p-2.5 text-white focus:border-race-accent focus:outline-none cursor-pointer"
+                    >
+                        <option value="moto">Motocicleta (Moto)</option>
+                        <option value="auto">Automóvil (Carro)</option>
+                        <option value="monopatin_electrico">Monopatín Eléctrico</option>
+                    </select>
+                </div>
+                <div>
                     <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">Marca</label>
                     <input
                         type="text"
                         value={marca}
                         onChange={(e) => setMarca(e.target.value)}
                         className="mt-1 w-full rounded border border-zinc-700 bg-zinc-900 p-2.5 text-white focus:border-race-accent focus:outline-none"
-                        placeholder="Ej. KTM, Mazda"
-                        required
-                    />
-                </div>
-                <div>
-                    <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">Modelo / Línea</label>
-                    <input
-                        type="text"
-                        value={modelo}
-                        onChange={(e) => setModelo(e.target.value)}
-                        className="mt-1 w-full rounded border border-zinc-700 bg-zinc-900 p-2.5 text-white focus:border-race-accent focus:outline-none"
-                        placeholder="Ej. Duke 200, 3 NGP"
+                        placeholder="Ej. KTM, Mazda, Xiaomi"
                         required
                     />
                 </div>
@@ -84,38 +86,61 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({ onVehicleCreated, onCa
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div>
-                    <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">Año</label>
+                    <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">Modelo / Línea</label>
                     <input
-                        type="number"
-                        value={año}
-                        onChange={(e) => setAño(Number(e.target.value))}
+                        type="text"
+                        value={modelo}
+                        onChange={(e) => setModelo(e.target.value)}
                         className="mt-1 w-full rounded border border-zinc-700 bg-zinc-900 p-2.5 text-white focus:border-race-accent focus:outline-none"
+                        placeholder="Ej. Duke 200, 3 NGP, Pro 2"
                         required
                     />
                 </div>
                 <div>
-                    <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">Placa</label>
+                    <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">Año de Fabricación</label>
                     <input
-                        type="text"
-                        placeholder="Ej. KMX23F"
-                        value={placa}
-                        onChange={(e) => setPlaca(e.target.value)}
+                        type="number"
+                        value={anio}
+                        onChange={(e) => setAnio(Number(e.target.value))}
                         className="mt-1 w-full rounded border border-zinc-700 bg-zinc-900 p-2.5 text-white focus:border-race-accent focus:outline-none"
                         required
                     />
                 </div>
             </div>
 
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                    <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">Placa / Serial</label>
+                    <input
+                        type="text"
+                        value={placa}
+                        onChange={(e) => setPlaca(e.target.value)}
+                        className="mt-1 w-full rounded border border-zinc-700 bg-zinc-900 p-2.5 text-white focus:border-race-accent focus:outline-none"
+                        placeholder="Ej. KMX23F"
+                    />
+                </div>
+                <div>
+                    <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">Color Principal</label>
+                    <input
+                        type="text"
+                        value={color}
+                        onChange={(e) => setColor(e.target.value)}
+                        className="mt-1 w-full rounded border border-zinc-700 bg-zinc-900 p-2.5 text-white focus:border-race-accent focus:outline-none"
+                        placeholder="Ej. Negro Mate"
+                        required
+                    />
+                </div>
+            </div>
+
             <div>
-                <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">Tipo de Vehículo</label>
-                <select
-                    value={tipoVehiculo}
-                    onChange={(e) => setTipoVehiculo(e.target.value)}
-                    className="mt-1 w-full rounded border border-zinc-700 bg-zinc-900 p-2.5 text-white focus:border-race-accent focus:outline-none"
-                >
-                    <option value="9db4ca5b-68c7-4b78-aed3-1c795c02dac0">Motocicleta (Moto)</option>
-                    <option value="automovil_categoria_id">Automóvil (Carro)</option>
-                </select>
+                <label className="block text-xs font-semibold text-zinc-400 uppercase tracking-wider">Modificaciones Instaladas</label>
+                <textarea
+                    value={modificaciones}
+                    onChange={(e) => setModificaciones(e.target.value)}
+                    rows={2}
+                    className="mt-1 w-full rounded border border-zinc-700 bg-zinc-900 p-2.5 text-white focus:border-race-accent focus:outline-none resize-none"
+                    placeholder="Ej. Full System, filtro de alto flujo... (Dejar vacío si está Stock)"
+                />
             </div>
 
             <div className="flex space-x-3 pt-2">

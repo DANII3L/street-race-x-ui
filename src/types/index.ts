@@ -101,26 +101,32 @@ export interface DiscoverResponse {
   data: DiscoverPilot[];
 }
 
+export type TipoVehiculoString = 'auto' | 'moto' | 'monopatin_electrico';
+
 export interface VehicleProps {
-  id: string;
-  user_id: string;
-  tipo_vehiculo: string;
-  marca: string;
-  modelo: string;
-  año: number;
-  placa: string;
-  activo: boolean;
-  created_at?: any;
-  updated_at?: any;
+    id: string;
+    user_id: string;
+    tipo_vehiculo: TipoVehiculoString | string;
+    marca: string;
+    modelo: string;
+    año: number;
+    color?: string;
+    placa: string | null;
+    modificaciones: string | null;
+    activo: boolean;
+    created_at: {
+        _seconds: number;
+        _nanoseconds: number;
+    } | string;
 }
 
 export interface VehicleItem {
-  props: VehicleProps;
+    props: VehicleProps;
 }
 
 export interface VehicleListResponse {
-  ok: boolean;
-  data: VehicleItem[];
+    ok: boolean;
+    data: VehicleItem[];
 }
 
 export interface VehicleActionResponse {
@@ -134,4 +140,26 @@ export interface UserProfileResponse {
   data: {
     props: PilotProps;
   };
+}
+
+export interface NotificationProps {
+  id: string;
+  user_id: string;
+  tipo: 'reto_recibido' | 'reto_aceptado' | 'reto_rechazado' | 'resultado' | 'rango_subido';
+  mensaje: string;
+  leida: boolean;
+  referencia_id: string | null;
+  created_at: {
+    _seconds: number;
+    _nanoseconds: number;
+  };
+}
+
+export interface NotificationItem {
+  props: NotificationProps;
+}
+
+export interface NotificationListResponse {
+  ok: boolean;
+  data: NotificationItem[];
 }

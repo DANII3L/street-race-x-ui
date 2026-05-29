@@ -12,7 +12,7 @@ export interface CreateVehiclePayload {
 
 class VehicleServiceImpl {
   private handleError(error: any): never {
-    const message = error.response?.data?.message || 'Error inesperado en el servicio de vehículos';
+    const message = error.response?.data?.msg || 'Error inesperado en el servicio de vehículos';
     throw new Error(message);
   }
 
